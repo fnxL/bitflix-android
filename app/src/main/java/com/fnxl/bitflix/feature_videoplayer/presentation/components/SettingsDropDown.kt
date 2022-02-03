@@ -186,10 +186,10 @@ fun InformationDialog(state: VideoPlayerState, onEvent: (MediaEvent) -> Unit) {
             Text(text = "${videoTrack?.width} x ${videoTrack?.height}")
 
             SpacerSmall()
-
-            Text(text = "Framerate:", fontWeight = FontWeight.Bold)
-            Text(text = "${videoTrack?.frameRateDen?.let { videoTrack.frameRateNum.div(it) }} fps")
-
+            if (videoTrack?.frameRateDen != 0) {
+                Text(text = "Framerate:", fontWeight = FontWeight.Bold)
+                Text(text = "${videoTrack?.frameRateDen?.let { videoTrack.frameRateNum.div(it) }} fps")
+            }
         }
     }
 }
