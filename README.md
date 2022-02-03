@@ -20,28 +20,30 @@ Android &amp; TV Client for Bitflix using Jetpack Compose &amp; media player imp
 
 ### Movies Screen
 
-![MovieScreen](https://i.imgur.com/1bXuwOL.jpg)
+<img src="https://i.imgur.com/1bXuwOL.jpg" height="800"/>
 
 ### TV Shows Screen
 
-![TVShows](https://i.imgur.com/2ODw0Vv.jpg)  
+<img src="https://i.imgur.com/2ODw0Vv.jpg" height="800"/>
 
 ### Search Screen
 
-![Search](https://i.imgur.com/AE6JSPC.jpg)
+<img src="https://i.imgur.com/AE6JSPC.jpg" height="800"/>
+
 
 ### Movie Detail Screen
 
-![MovieDetail](https://user-images.githubusercontent.com/48607132/152368530-d6b92a7a-84cd-4d0d-bed4-685ce153cfd0.jpg)
+<img src="https://user-images.githubusercontent.com/48607132/152368530-d6b92a7a-84cd-4d0d-bed4-685ce153cfd0.jpg" height="800"/>
+
 
 ### TV Show Detail Screen
 
-![TVShowDetails](https://user-images.githubusercontent.com/48607132/152369563-afe848c6-ea98-4bf5-a6fd-1047d330e21f.jpg)
-
+<img src="https://user-images.githubusercontent.com/48607132/152369563-afe848c6-ea98-4bf5-a6fd-1047d330e21f.jpg" height="800"/>
 
 ### Quality Select
 
-![QualitySelect](https://user-images.githubusercontent.com/48607132/152368647-571bd57a-2504-45e1-8008-7a364a82d496.jpg)
+<img src="https://user-images.githubusercontent.com/48607132/152368647-571bd57a-2504-45e1-8008-7a364a82d496.jpg" height="800"/>
+
 
 ### Video Player View
 
