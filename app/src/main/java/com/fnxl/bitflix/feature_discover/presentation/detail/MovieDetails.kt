@@ -19,6 +19,7 @@ import com.fnxl.bitflix.feature_discover.presentation.components.TitleRow
 import com.fnxl.bitflix.feature_discover.presentation.detail.components.Backdrop
 import com.fnxl.bitflix.feature_discover.presentation.detail.components.GenreSection
 import com.fnxl.bitflix.feature_discover.presentation.detail.components.TitleInfoSection
+import timber.log.Timber
 
 @Composable
 fun MovieDetails(state: DetailState, onEvent: (DetailEvent) -> Unit) {
@@ -26,6 +27,7 @@ fun MovieDetails(state: DetailState, onEvent: (DetailEvent) -> Unit) {
     val details = state.movie
     val url = "${BACKDROP_URL}${details.backdrop_path}"
     val mediaType = MediaType.MOVIE
+
 
     Column(Modifier.verticalScroll(state = scrollState)) {
         // Backdrop & Title Text

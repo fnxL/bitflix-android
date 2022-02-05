@@ -16,9 +16,11 @@ object Config {
 
     const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
     const val WATCH_REGION_DEFAULT = "IN"
-    const val SERVER_BASE_URL = "https://api-bitflix.herokuapp.com/api/"
     const val POSTER_URL = "https://image.tmdb.org/t/p/w500"
     const val BACKDROP_URL = "https://image.tmdb.org/t/p/w1280"
+
+//    const val SERVER_BASE_URL = "https://api-bitflix.herokuapp.com/api/"
+    const val SERVER_BASE_URL = "http://localhost:5000/api/"
 
     const val APPEND_TO_RESPONSE_MOVIE =
         "videos,releases,recommendations,credits,external_ids,images"

@@ -1,4 +1,4 @@
-package com.fnxl.bitflix.core.data.dto.response
+package com.fnxl.bitflix.core.data.remote.response
 
 data class BasicApiResponse<T>(
     val successful: Boolean,

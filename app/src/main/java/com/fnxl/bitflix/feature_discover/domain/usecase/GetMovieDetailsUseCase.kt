@@ -9,6 +9,6 @@ class GetMovieDetailsUseCase(private val repository: DiscoverRepository) {
         id: String,
         append: String
     ): Resource<Movie> {
-        return repository.getMovieDetails(id, append = append)
+        return repository.getMovieDetails(id = id, append = append)
     }
 }

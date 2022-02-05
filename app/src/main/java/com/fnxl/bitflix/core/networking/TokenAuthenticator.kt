@@ -31,6 +31,7 @@ class TokenAuthenticator(
                 is Resource.Error -> {
                     // Logout user
                     dataStore.saveRefreshToken("")
+                    dataStore.saveAccessToken("")
                     null
                 }
             }

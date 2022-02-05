@@ -1,6 +1,7 @@
 package com.fnxl.bitflix.di
 
 import com.fnxl.bitflix.core.domain.DataStorePreferences
+import com.fnxl.bitflix.core.util.Config
 import com.fnxl.bitflix.core.util.Constants
 import com.fnxl.bitflix.feature_auth.data.remote.AuthApi
 import com.fnxl.bitflix.feature_auth.data.repository.AuthRepositoryImpl
@@ -22,7 +23,7 @@ object AuthModule {
     @Provides
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(Config.SERVER_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApi::class.java)

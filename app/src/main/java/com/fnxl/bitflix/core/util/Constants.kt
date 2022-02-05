@@ -7,7 +7,8 @@ object Constants {
     const val PREFERENCES_KEY_SPLASH_SCREEN = "splashScreenState"
     const val SPLASH_SCREEN_DURATION = 1000L
     const val OVERLAY_ALPHA = 0.8f
-    const val BASE_URL = "https://api-bitflix.herokuapp.com/api/"
+
+    const val UPDATE_BASE_URL = "https://api.github.com"
 
     const val MIN_USERNAME_LENGTH = 3
     const val MIN_PASSWORD_LENGTH = 4

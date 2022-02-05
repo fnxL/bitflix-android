@@ -4,10 +4,12 @@ package com.fnxl.bitflix.core.presentation.splash
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.*
@@ -16,9 +18,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.fnxl.bitflix.R
+import com.fnxl.bitflix.core.presentation.components.SpacerSmall
+import com.fnxl.bitflix.core.presentation.components.StandardAppDialog
+import com.fnxl.bitflix.core.presentation.ui.theme.DarkGray
+import com.fnxl.bitflix.core.presentation.ui.theme.RoundedCornerMedium
+import com.fnxl.bitflix.core.presentation.ui.theme.SpaceMedium
 import com.fnxl.bitflix.core.util.Constants
 import com.fnxl.bitflix.core.util.UiEvent
 import com.fnxl.bitflix.destinations.SplashScreenDestination
@@ -35,7 +43,6 @@ import timber.log.Timber
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    onSplashComplete: () -> Unit,
     navigator: DestinationsNavigator
 ) {
 
@@ -47,8 +54,7 @@ fun SplashScreen(
         animationSpec = tween(durationMillis = Constants.SPLASH_SCREEN_DURATION.toInt())
 
     )
-    Timber.d("Welcome Splash Screen")
-
+    val state = viewModel.state
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -70,12 +76,35 @@ fun SplashScreen(
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(Constants.SPLASH_SCREEN_DURATION)
-        viewModel.checkLoggedIn()
-        onSplashComplete()
+        viewModel.onEvent(SplashEvent.OnSplashComplete)
     }
 
     Splash(alpha = alphaAnim.value)
+    
+    AlertDialog(
+        onDismissRequest = { /*TODO*/ },
+        backgroundColor = DarkGray,
+        shape = RoundedCornerShape(RoundedCornerMedium),
+        title = {
+            Text(text = "Update Available")
+        },
+        text = {
+            Column {
+                Text(text = "A new update for Bitflix is available")
+                SpacerSmall()
+                Text(text = "What's new", fontWeight = FontWeight.Bold)
+                SpacerSmall()
+                Text(text = state.update.body)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { viewModel.onEvent(SplashEvent.OnDownload) }) {
+                Text(text = if(viewModel.fileExists) "Install" else "Download")
+            }
+        },
+    )
 
+    
 }
 
 @Composable

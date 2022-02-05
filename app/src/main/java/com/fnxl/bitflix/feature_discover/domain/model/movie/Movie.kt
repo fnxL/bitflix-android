@@ -22,7 +22,7 @@ data class Movie(
     val recommendations: Recommendations = Recommendations(),
     val release_date: String = "",
     val recommendation: Releases = Releases(),
-    val revenue: Int = Int.MAX_VALUE,
+    val revenue: Long = Long.MAX_VALUE,
     val runtime: Int = Int.MAX_VALUE,
     val spoken_languages: List<SpokenLanguage> = emptyList(),
     val status: String = "",

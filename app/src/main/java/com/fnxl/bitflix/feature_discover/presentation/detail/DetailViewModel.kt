@@ -1,5 +1,6 @@
 package com.fnxl.bitflix.feature_discover.presentation.detail
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -139,7 +140,7 @@ class DetailViewModel @Inject constructor(
                         }
                         is Resource.Error -> {
                             _uiEvent.send(sendErrorSnackbar(result))
-                            state.copy(loading = false)
+                            state.copy(loading = true)
                         }
                     }
                 }
@@ -158,7 +159,7 @@ class DetailViewModel @Inject constructor(
                         }
                         is Resource.Error -> {
                             _uiEvent.send(sendErrorSnackbar(result))
-                            state.copy(loading = false)
+                            state.copy(loading = true)
                         }
                     }
                 }

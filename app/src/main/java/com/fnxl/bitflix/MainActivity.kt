@@ -1,5 +1,6 @@
 package com.fnxl.bitflix
 
+import android.app.DownloadManager
 import android.app.UiModeManager
 import android.content.res.Configuration
 import android.os.Bundle
@@ -43,6 +44,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 
 val LocalSnackbar = compositionLocalOf<SnackbarHostState> { error("No SnackbarHostState Provided") }
@@ -59,9 +61,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var checkSessionUseCase: CheckSessionUseCase
 
+    private var shouldExecuteOnResume by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        shouldExecuteOnResume = false
         setContent {
             val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
             // Check Device Type
@@ -75,35 +79,14 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val backStack by navController.currentBackStackEntryAsState()
                 val currentRoute = backStack?.destination?.route
-                var splashCompleted by remember { mutableStateOf(false) }
                 val originalSystemView by rememberSaveable { mutableStateOf(window.decorView.systemUiVisibility) }
                 val systemUi = rememberSystemUiController()
-
-                Timber.d("Route: $currentRoute")
                 if (currentRoute == PlaybackScreenDestination.route) hideSystemUI() else showSystemUI(
                     originalSystemView = originalSystemView
                 )
 
-                LaunchedEffect(true) {
-                    dataStorePref.dataStore.data.collect {
-                        delay(500)
-                        val token = dataStorePref.readRefreshToken().first()
-                        Timber.d("ROUTE Splash $splashCompleted")
-                        if (splashCompleted) {
-                            Timber.d("Route  $currentRoute: Executed Token:$token")
-                            if (currentRoute != LoginScreenDestination.route && token.isEmpty()) {
-                                Timber.d("Route Inside Executed")
-                                navController.navigate(LoginScreenDestination.route) {
-                                    popUpTo(MovieScreenDestination.route) {
-                                        inclusive = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
                 SideEffect {
-                 systemUi.setSystemBarsColor(DarkGray)
+                    systemUi.setSystemBarsColor(DarkGray)
                 }
 
                 BitflixMobileTheme {
@@ -122,9 +105,7 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 ) {
                                     composable(SplashScreenDestination) {
-                                        SplashScreen(
-                                            navigator = destinationsNavigator,
-                                            onSplashComplete = { splashCompleted = true })
+                                        SplashScreen(navigator = destinationsNavigator)
                                     }
                                 }
                                 TopBar(
@@ -149,7 +130,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        checkUserLoginActivity()
+        if (shouldExecuteOnResume)
+            checkUserLoginActivity()
+        else shouldExecuteOnResume = true
     }
 
 
@@ -166,6 +149,7 @@ class MainActivity : ComponentActivity() {
                         // Logout
                         if (result.exception?.errorCode != -1) {
                             dataStorePref.saveRefreshToken("")
+                            dataStorePref.saveAccessToken("")
                         }
                     }
                 }
