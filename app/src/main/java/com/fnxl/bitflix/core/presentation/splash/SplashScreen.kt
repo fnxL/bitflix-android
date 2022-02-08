@@ -80,31 +80,35 @@ fun SplashScreen(
     }
 
     Splash(alpha = alphaAnim.value)
-    
-    AlertDialog(
-        onDismissRequest = { /*TODO*/ },
-        backgroundColor = DarkGray,
-        shape = RoundedCornerShape(RoundedCornerMedium),
-        title = {
-            Text(text = "Update Available")
-        },
-        text = {
-            Column {
-                Text(text = "A new update for Bitflix is available")
-                SpacerSmall()
-                Text(text = "What's new", fontWeight = FontWeight.Bold)
-                SpacerSmall()
-                Text(text = state.update.body)
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = { viewModel.onEvent(SplashEvent.OnDownload) }) {
-                Text(text = if(viewModel.fileExists) "Install" else "Download")
-            }
-        },
-    )
 
-    
+    if (viewModel.updateDialog) {
+        AlertDialog(
+            onDismissRequest = { /*TODO*/ },
+            backgroundColor = DarkGray,
+            shape = RoundedCornerShape(RoundedCornerMedium),
+            title = {
+                Text(text = "Update Available")
+            },
+            text = {
+                Column {
+                    Text(text = "A new update for Bitflix is available")
+                    SpacerSmall()
+                    Text(text = "What's new", fontWeight = FontWeight.Bold)
+                    SpacerSmall()
+                    Text(text = state.update.body)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    if (viewModel.fileExists) viewModel.onEvent(SplashEvent.OnInstall) else viewModel.onEvent(SplashEvent.OnDownload)
+                }) {
+                    Text(text = if (viewModel.fileExists) "Install" else "Download")
+                }
+            },
+        )
+    }
+
+
 }
 
 @Composable
