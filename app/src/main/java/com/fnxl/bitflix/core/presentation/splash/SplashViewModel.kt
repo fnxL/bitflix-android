@@ -54,12 +54,6 @@ class SplashViewModel @Inject constructor(
     private val _eventFlow = Channel<UiEvent>()
     val eventFlow = _eventFlow.receiveAsFlow()
 
-    var isUpdateAvailable by mutableStateOf(false)
-        private set
-
-    var isSplashCompleted by mutableStateOf(false)
-        private set
-
     var destination by mutableStateOf<Direction?>(null)
 
     var state by mutableStateOf(UpdateState(update = UpdateResponse()))
@@ -72,14 +66,12 @@ class SplashViewModel @Inject constructor(
         checkUpdate()
     }
 
-    private val resolver = context.contentResolver
-    private val installer = context.packageManager.packageInstaller
     fun onEvent(event: SplashEvent) {
         when (event) {
             is SplashEvent.OnSplashComplete -> {
-                isSplashCompleted = true
-                if (!isUpdateAvailable)
-                    verifyUserLoginStatus()
+                if(!updateDialog)
+                verifyUserLoginStatus()
+
             }
             is SplashEvent.OnDownload -> {
                 downloadUpdate()
@@ -94,8 +86,7 @@ class SplashViewModel @Inject constructor(
 
     private  fun installUpdate() {
         val fileName = state.update.assets[0].name
-        val url = state.update.assets[0].browser_download_url
-        var destination =
+        val destination =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/" + fileName
         val file = File(destination)
 
@@ -169,8 +160,8 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = checkUpdateUseCase()) {
                 is Resource.Success -> {
+
                     if (result.data?.tag_name!! > BuildConfig.VERSION_NAME) {
-                        isUpdateAvailable = true
                         updateDialog = true
                         state = state.copy(update = result.data)
                     }
@@ -185,7 +176,6 @@ class SplashViewModel @Inject constructor(
     private fun verifyUserLoginStatus() {
         viewModelScope.launch {
             val refreshToken = dataStore.readRefreshToken().first()
-            if (isUpdateAvailable) return@launch
             if (refreshToken.isNotEmpty()) {
                 when (val result = checkSessionUseCase(refreshToken = refreshToken)) {
                     is Resource.Success -> {
